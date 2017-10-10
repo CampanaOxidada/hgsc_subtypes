@@ -10,18 +10,17 @@
 
 ############################################
 # INSTALL DEPENDENCIES
-Rscript INSTALL.R
+#Rscript INSTALL.R
 
 #################
 # PART ZERO:
 # Download Mayo data
 #################
 # COMBAT adjust Mayo data
-Rscript 1.DataInclusion/Scripts/processMayoEset/\
-Agilent1and2and3_COMBAT_datamerge.R
+#Rscript 1.DataInclusion/Scripts/processMayoEset/ Agilent1and2and3_COMBAT_datamerge.R
 
 # Create an eset from the Mayo data
-Rscript 1.DataInclusion/Scripts/processMayoEset/createMayoEset.R
+#Rscript 1.DataInclusion/Scripts/processMayoEset/createMayoEset.R
 
 # Define Constants
 DATASETS="TCGA_eset mayo.eset GSE32062.GPL6480_eset GSE9891_eset aaces.eset"
@@ -32,7 +31,7 @@ NSTARTS=20
 NO_SHUFFLE=FALSE
 SHUFFLE=TRUE
 SAM_SUBSET='commongenes'
-AACES_PATH='aaces_expression.tsv'
+AACES_PATH='1.DataInclusion/Data/Aaces/aaces.eset.RData'
 
 #################
 # PART ONE: 

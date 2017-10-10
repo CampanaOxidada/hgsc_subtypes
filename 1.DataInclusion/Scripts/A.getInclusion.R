@@ -39,7 +39,7 @@ excludeEsets <- c("PMID17290060_eset", "E.MTAB.386_eset")
 
 # Load aaces path (if applicable)
 options <- list(optparse::make_option(c("--aaces"),
-                                      default = "aaces_expression.tsv",
+                                      default = "1.DataInclusion/Data/Aaces/aaces.eset.RData",
                                       help = "path to AACES dataset",
                                       type = "character"))
 opt_parser <- optparse::OptionParser(option_list = options)
@@ -59,8 +59,7 @@ load("1.DataInclusion/Data/Mayo/MayoEset.Rda")
  
 # Load the AACES expression data
 if (file.exists(aacespath)) {
-  aaces.exprs <- read.table(aacespath, sep = "\t", row.names = 1, header = TRUE)
-  aaces.eset <- ExpressionSet(assayData = as.matrix(aaces.exprs))
+  load(aacespath)
   aaces <- TRUE
 } else {
   aaces <- FALSE
