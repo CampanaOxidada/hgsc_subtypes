@@ -35,6 +35,7 @@ rank1 = as.numeric(paste(args[1]))
 rank2 = as.numeric(paste(args[2]))
 nruns = as.numeric(paste(args[3]))
 set.seed(args[4])
+gMAD = as.logical(paste(args[5]))
 
 ############################################
 # Load Data
@@ -47,8 +48,13 @@ if("Mayo" %in% args) {
   argsCurated = c(argsCurated[1], "Mayo", argsCurated[2:length(argsCurated)])
 }
 
+if(gMAD) {
+  madgenes <- "globalmadgenes"
+} else {
+  madgenes <- "datasetmadgenes"
+}
 # Use the LoadOVCA_Data function to read in the datasets subset by MAD genes
-ExpData <- LoadOVCA_Data(datasets = argsCurated, genelist_subset = "madgenes")
+ExpData <- LoadOVCA_Data(datasets = argsCurated, genelist_subset = madgenes)
 
 ############################################
 # Run NMF

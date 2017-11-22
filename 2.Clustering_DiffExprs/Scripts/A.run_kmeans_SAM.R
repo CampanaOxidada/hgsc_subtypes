@@ -50,6 +50,7 @@ kSEED <- as.numeric(paste(args[4]))
 bNMF <- as.logical(args[5])
 shuffle <- as.logical(args[6])
 SAM_subset <- args[7]
+gMAD <- as.logical(args[8])
 
 # Separate the eset arguments from the rest of the commandArgs
 argsCurated <- args[grep("eset", args)]
@@ -78,12 +79,17 @@ CommonGenes <- read.csv(common.genes.path, header = TRUE, stringsAsFactors = FAL
 
 # Read in mad genes csv file. The file was generated as an intersection
 #of the top 1500 most variably expressed genes
-mad.genes.path <- file.path("1.DataInclusion", "Data", "Genes",
-                            "GlobalMAD_genelist.csv")
-GlobalMAD <- read.csv(file = mad.genes.path, header = TRUE, stringsAsFactors = FALSE)
+mad.genes.path <- file.path("1.DataInclusion", "Data", "Genes")
+
+if(gMAD) {
+                            
+    MADgenes <- read.csv(file = file.path(mad.genes.path, "GlobalMAD_genelist.csv"),
+			header = TRUE, stringsAsFactors = FALSE)
+}
+
 
 ############################################
-# Perform k-means clustering using Global MAD
+# Perform k-means clustering using MAD genes, either global or dataset-specific
 ############################################
 # Initialize a Clusters list, which will hold the cluster memberships
 # for all datasets. The cluster membership will either be derived from
@@ -94,8 +100,15 @@ Clusters <- list()
 if (!bNMF) {
   # Loop over each dataset with expression data
   for (dataset in names(ExpData)) {
+
+    if(!gMAD) {
+	datasetMADfile <- paste0(dataset, "_MAD_genelist.csv")
+
+        MADgenes <- read.csv(file = file.path(mad.genes.path, datasetMADfile),
+			header = TRUE, stringsAsFactors = FALSE)
+    }
     # Store the results of the k-means clustering to the Clusters list
-    Clusters[[dataset]] <- KmeansGlobal(ExpData[[dataset]], GlobalMAD[ ,1],
+    Clusters[[dataset]] <- KmeansGlobal(ExpData[[dataset]], MADgenes[ ,1],
                                         k, k2, starts = kStarts)
   }
   # Extract cluster membership files for NMF results

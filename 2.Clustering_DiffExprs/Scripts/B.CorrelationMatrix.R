@@ -30,6 +30,7 @@ k = as.numeric(paste(args[1]))
 k2 = as.numeric(paste(args[2]))  #Number of clusters 
 SEED = as.numeric(paste(args[3])) 
 filepath = as.character(paste(args[4]))
+gMAD = as.logical(paste(args[5]))
 set.seed(SEED)
 krange = k:k2
 
@@ -93,7 +94,12 @@ if("Mayo" %in% args) {
 }
 
 # Use the LoadOVCA_Data function to read in the datasets subset by MAD genes
-ExpData <- LoadOVCA_Data(datasets = argsCurated, genelist_subset = "madgenes")
+if(gMAD) {
+  madgenes <- "globalmadgenes"
+} else {
+  madgenes <- "datasetmadgenes"
+}
+ExpData <- LoadOVCA_Data(datasets = argsCurated, genelist_subset = madgenes)
 
 # Load the GlobalMAD genes
 GlobalMAD <- read.csv(file = "1.DataInclusion/Data/Genes/GlobalMAD_genelist.csv", header = T, 
