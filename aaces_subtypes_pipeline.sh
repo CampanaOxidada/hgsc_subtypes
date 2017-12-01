@@ -13,14 +13,10 @@
 #Rscript INSTALL.R
 
 #################
-# PART ZERO:
-# Download Mayo data
+# PART NEO: prepare AACES eset from CEL files
 #################
-# COMBAT adjust Mayo data
-#Rscript 1.DataInclusion/Scripts/processMayoEset/ Agilent1and2and3_COMBAT_datamerge.R
 
-# Create an eset from the Mayo data
-#Rscript 1.DataInclusion/Scripts/processMayoEset/createMayoEset.R
+Rscript 1.DataInclusion/Scripts/processAacesEset/preprocess_aaces_cel_files.R
 
 # Define Constants
 DATASETS="TCGA_eset mayo.eset GSE32062.GPL6480_eset GSE9891_eset aaces.eset"
