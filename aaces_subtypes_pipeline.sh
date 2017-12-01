@@ -17,6 +17,7 @@ exec &>aaces_analysis.out
 #################
 
 Rscript 1.DataInclusion/Scripts/processAacesEset/preprocess_aaces_cel_files.R
+Rscript 1.DataInclusion/Scripts/processAacesEset/addPhenoData.R
 
 # Define Constants
 DATASETS="TCGA_eset mayo.eset GSE32062.GPL6480_eset GSE9891_eset aaces.eset"
