@@ -1,5 +1,5 @@
 #!/bin/bash
-#exec &>hgsc_analysis.out
+exec &>aaces_analysis.out
 
 # Amy Campbell, 2017
 # This shell script performs differential clustering analyses
@@ -42,7 +42,7 @@ AACES_PATH='1.DataInclusion/Data/Aaces/aaces.eset.RData'
 # NOTE: The Mayo Clinic Data is not currently in curatedOvarianData.
 
 # Output the samples for each dataset that pass the inclusion criteria
-Rscript 1.DataInclusion/Scripts/A.getInclusion.R --aaces $AACES_PATH
+#Rscript 1.DataInclusion/Scripts/A.getInclusion.R --aaces $AACES_PATH
 
 # Output the common genes and the MAD (Median Absolute Deviation) genes to be
 # used in developing moderated t score vectors and in clustering, respectively.
@@ -66,37 +66,38 @@ Rscript 1.DataInclusion/Scripts/B.getGenes.R $DATASETS "GSE26712_eset"
 # ~~~~~~~~~~~~~
 # Output across dataset correlations for MAD genes
 # NOTE: common genes used in downstream analyses
+
 Rscript 2.Clustering_DiffExprs/Scripts/A.run_kmeans_SAM.R $KMIN $KMAX $NSTARTS $SEED FALSE $NO_SHUFFLE \
-"madgenes" $DATASETS "GSE26712_eset" 
+"datasetmadgenes" FALSE $DATASETS "GSE26712_eset" 
 
 # ~~~~~~~~~~~~~
 # k means & SAM (with common genes)
 # ~~~~~~~~~~~~~
 # Perform k means and SAM
-Rscript 2.Clustering_DiffExprs/Scripts/A.run_kmeans_SAM.R $KMIN $KMAX $NSTARTS $SEED FALSE $NO_SHUFFLE $SAM_SUBSET \
-$DATASETS "GSE26712_eset" 
+Rscript 2.Clustering_DiffExprs/Scripts/A.run_kmeans_SAM.R $KMIN $KMAX $NSTARTS $SEED FALSE $NO_SHUFFLE \
+$SAM_SUBSET FALSE $DATASETS "GSE26712_eset" 
 
 # Output correlation matrices
-Rscript 2.Clustering_DiffExprs/Scripts/B.CorrelationMatrix.R $KMIN $KMAX $SEED Figures/CorrelationMatrix/ $DATASETS \
-"GSE26712_eset"
+Rscript 2.Clustering_DiffExprs/Scripts/B.CorrelationMatrix.R $KMIN $KMAX $SEED Figures/CorrelationMatrix/ FALSE \
+$DATASETS "GSE26712_eset"
 
 # Output k-means barcharts
 Rscript 2.Clustering_DiffExprs/Scripts/C.KMeansBarCharts.R $KMIN $KMAX $DATASETS 
 
 # Shuffle genes to compare across population correlations in real data
 Rscript 2.Clustering_DiffExprs/Scripts/A.run_kmeans_SAM.R $KMIN $KMAX $NSTARTS $SEED FALSE $SHUFFLE $SAM_SUBSET \
-$DATASETS "GSE26712_eset" 
+FALSE $DATASETS "GSE26712_eset" 
 
 # ~~~~~~~~~~~~~
 # NMF
 # ~~~~~~~~~~~~~
 # Output consensus matrices, NMF cluster membership files  and
 # cophenetic coefficients
-Rscript 2.Clustering_DiffExprs/Scripts/D.NMF.R $KMIN $KMAX $NSTARTS $SEED $DATASETS "GSE26712_eset"
+Rscript 2.Clustering_DiffExprs/Scripts/D.NMF.R $KMIN $KMAX $NSTARTS $SEED FALSE $DATASETS "GSE26712_eset"
 
-# Run SAM on NMF clusters (TRUE argument forces NMF analysis)
+# Run SAM on NMF clusters (TRUE argument in 5th position forces NMF analysis)
 Rscript 2.Clustering_DiffExprs/Scripts/A.run_kmeans_SAM.R $KMIN $KMAX $NSTARTS $SEED TRUE $NO_SHUFFLE $SAM_SUBSET \
-$DATASETS "GSE26712_eset"
+FALSE $DATASETS "GSE26712_eset"
 
 # ~~~~~~~~~~~~~
 # k means vs. NMF

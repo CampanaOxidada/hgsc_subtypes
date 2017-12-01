@@ -20,7 +20,7 @@ library(plyr)
 LoadOVCA_Data <- function(datasets,
                           goodsample_subset_dir = "1.DataInclusion/Data/GoodSamples/",
                           commongenes_dir = "1.DataInclusion/Data/Genes/CommonGenes_genelist.csv",
-                          madgenes_dir = "1.DataInclusion/Data/Genes/GlobalMAD_genelist.csv",
+                          madgenes_dir = "1.DataInclusion/Data/Genes",
                           genelist_subset = "commongenes",
                           mayo_exprs_file = "1.DataInclusion/Data/Mayo/MayoEset.Rda",
                           aaces_exprs_file = "1.DataInclusion/Data/Aaces/aaces.eset.RData",
@@ -98,8 +98,13 @@ LoadOVCA_Data <- function(datasets,
     # Determine user defined method of subseting genes
     if (genelist_subset == "commongenes") {
       subset <- read.csv(commongenes_dir, header = T, stringsAsFactors = F)
-    } else if (genelist_subset == "madgenes") {
-      subset <- read.csv(madgenes_dir, header = T, stringsAsFactors = F)
+    } else if (genelist_subset == "globalmadgenes") {
+      subset <- read.csv(file.path(madgenes_dir,"GlobalMAD_genelist.csv"),
+			header = T, stringsAsFactors = F)
+    } else if (genelist_subset == "datasetmadgenes") {
+      datasetMADfile <- paste0(eset_exprs, "_MAD_genelist.csv")
+      subset <- read.csv(file.path(madgenes_dir,datasetMADfile),
+			header = T, stringsAsFactors = F)
     } else if (genelist_subset != "None") {
       # Raise an error
       stop("Set genelist_subset to 'commongenes', 'madgenes', or 'None'")

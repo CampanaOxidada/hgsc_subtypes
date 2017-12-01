@@ -81,6 +81,11 @@ for (dataset in 1:length(ExpData)) {
   # Use the MADgenes function to extract the top 1500 most variably expressed genes
   madSet <- MADgenes(datasetExprs, numGenes = 1500)
   
+  datasetMADfile <- paste0(args[dataset], "_MAD_genelist.csv")
+
+  write.csv(madSet, file = file.path("1.DataInclusion/Data/Genes", datasetMADfile),
+          row.names = FALSE)
+
   MADgeneSet <- unique(c(MADgeneSet, madSet))
 }
 
