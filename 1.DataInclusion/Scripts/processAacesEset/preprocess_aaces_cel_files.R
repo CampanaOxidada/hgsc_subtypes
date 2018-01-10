@@ -20,7 +20,9 @@ library(WGCNA)                        # whence collapseRows
 #LOAD AND PROCESS CEL FILES
 ###########################################################################
 
-cel.file.dir <- 'Data/expression'
+aaces.data.dir <- '1.DataInclusion/Data/Aaces'
+
+cel.file.dir <- file.path(aaces.data.dir,'expression')
 
 cel.pathname <- c(list.celfiles(cel.file.dir, full.names = TRUE))
 
@@ -28,7 +30,6 @@ cel.pathname <- c(list.celfiles(cel.file.dir, full.names = TRUE))
 eset.cel <- read.celfiles(cel.pathname)
 
 #load metadata from CSV
-aaces.data.dir <- '1.DataInclusion/Data/Aaces'
 
 meta.data.file <- file.path(aaces.data.dir, 'AACESmetaData.csv')
 
